@@ -108,7 +108,6 @@ declare namespace FourSlashInterface {
         marker(name?: string): void;
         bof(): void;
         eof(): void;
-        definition(definitionIndex?: number): void;
         type(definitionIndex?: number): void;
         position(position: number, fileIndex?: number): any;
         position(position: number, fileName?: string): any;
@@ -132,7 +131,6 @@ declare namespace FourSlashInterface {
         errorExistsBeforeMarker(markerName?: string): void;
         quickInfoIs(expectedText?: string, expectedDocumentation?: string): void;
         quickInfoExists(): void;
-        definitionCountIs(expectedCount: number): void;
         typeDefinitionCountIs(expectedCount: number): void;
         definitionLocationExists(): void;
         verifyDefinitionsName(name: string, containerName: string): void;
@@ -152,6 +150,17 @@ declare namespace FourSlashInterface {
         eval(expr: string, value: any): void;
         currentLineContentIs(text: string): void;
         currentFileContentIs(text: string): void;
+        /** Verifies that goToDefinition at the current position would take you to `endMarker`. */
+        goToDefinitionIs(endMarker: string): void;
+        /**
+         * `verify.goToDefinition("a", "b");` verifies that go-to-definition at marker "a" takes you to marker "b".
+         * `verify.goToDefinition(["a", "aa"], "b");` verifies that markers "a" and "aa" have the same definition "b".
+         * `verify.goToDefinition("a", ["b", "bb"]);` verifies that "a" has multiple definitions available.
+         * Finally, `verify.goToDefinition("a", "b", "c", "d");` is just `verify.goToDefinition("a", "b"); verify.goToDefinition("c", "d");`.
+         */
+        goToDefinition(...startsAndEnds: (string | string[])[]): void;
+        /** Verifies goToDefinition for each `${markerName}Reference` -> `${markerName}Definition` */
+        goToDefinitionForMarkers(...markerNames: string[]): void;
         verifyGetEmitOutputForCurrentFile(expected: string): void;
         verifyGetEmitOutputContentsForCurrentFile(expected: ts.OutputFile[]): void;
         /**
