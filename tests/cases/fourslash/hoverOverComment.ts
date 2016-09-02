@@ -7,5 +7,5 @@
 goTo.marker();
 verify.quickInfoIs("");
 verify.verifyDefinitionsName("", "");
-verify.not.definitionLocationExists();
+verify.goToDefinitionIs([]);
 verify.referencesAre([]);

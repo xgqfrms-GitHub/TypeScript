@@ -24,7 +24,5 @@ verify.goToDefinition(
     // Super in call position goes to constructor.
     "super", "ctr",
     // Super in any other position goes to the superclass.
-    "superExpression", "B");
-
-goTo.marker("superBroken");
-verify.not.definitionLocationExists();
+    "superExpression", "B",
+    "superBroken", []);

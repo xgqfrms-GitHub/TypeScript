@@ -13,8 +13,6 @@ verify.goToDefinition(
     "1", "label1Definition",
     "2", "label2Definition",
     // labels accross function boundaries
-    "3", "label1Definition");
-
-// undefined label
-goTo.marker("4");
-verify.not.definitionLocationExists();
+    "3", "label1Definition",
+    // undefined label
+    "4", []);

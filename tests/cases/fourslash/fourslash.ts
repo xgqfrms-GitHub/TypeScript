@@ -99,6 +99,7 @@ declare namespace FourSlashInterface {
     }
     class test_ {
         markers(): Marker[];
+        markerNames(): string[];
         marker(name?: string): Marker;
         ranges(): Range[];
         rangesByText(): { [text: string]: Range[] };
@@ -132,7 +133,6 @@ declare namespace FourSlashInterface {
         quickInfoIs(expectedText?: string, expectedDocumentation?: string): void;
         quickInfoExists(): void;
         typeDefinitionCountIs(expectedCount: number): void;
-        definitionLocationExists(): void;
         verifyDefinitionsName(name: string, containerName: string): void;
         isValidBraceCompletionAtPosition(openingBrace?: string): void;
     }
@@ -151,7 +151,7 @@ declare namespace FourSlashInterface {
         currentLineContentIs(text: string): void;
         currentFileContentIs(text: string): void;
         /** Verifies that goToDefinition at the current position would take you to `endMarker`. */
-        goToDefinitionIs(endMarker: string): void;
+        goToDefinitionIs(endMarkers: string | string[]): void;
         /**
          * `verify.goToDefinition("a", "b");` verifies that go-to-definition at marker "a" takes you to marker "b".
          * `verify.goToDefinition(["a", "aa"], "b");` verifies that markers "a" and "aa" have the same definition "b".

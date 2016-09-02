@@ -16,7 +16,6 @@
 // @Filename: b.ts
 /////*fileB*/
 
-goTo.marker("unknownFile");
-verify.not.definitionLocationExists();
-
-verify.goToDefinition("knownFile", "fileB");
+verify.goToDefinition(
+    "unknownFile", [],
+    "knownFile", "fileB");

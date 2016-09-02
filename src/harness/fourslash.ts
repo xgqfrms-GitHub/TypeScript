@@ -525,8 +525,8 @@ namespace FourSlash {
             }
         }
 
-        public verifyGoToDefinitionIs(endMarker: string) {
-            this.verifyGoToDefinitionWorker([endMarker]);
+        public verifyGoToDefinitionIs(endMarker: string | string[]) {
+            this.verifyGoToDefinitionWorker(endMarker instanceof Array ? endMarker : [endMarker]);
         }
 
         public verifyGoToDefinition(startsAndEnds: (string | string[])[]) {
@@ -1626,19 +1626,6 @@ namespace FourSlash {
             this.currentCaretPosition = definition.textSpan.start;
         }
 
-        public verifyDefinitionLocationExists(negative: boolean) {
-            const definitions = this.languageService.getDefinitionAtPosition(this.activeFile.fileName, this.currentCaretPosition);
-
-            const foundDefinitions = definitions && definitions.length;
-
-            if (foundDefinitions && negative) {
-                this.raiseError(`goToDefinition - expected to 0 definition locations but got ${definitions.length}`);
-            }
-            else if (!foundDefinitions && !negative) {
-                this.raiseError("goToDefinition - expected to find at least one definition location but got 0");
-            }
-        }
-
         public verifyTypeDefinitionsCount(negative: boolean, expectedCount: number) {
             const assertFn = negative ? assert.notEqual : assert.equal;
 
@@ -1665,6 +1652,10 @@ namespace FourSlash {
         public getMarkers(): Marker[] {
             //  Return a copy of the list
             return this.testData.markers.slice(0);
+        }
+
+        public getMarkerNames(): string[] {
+            return Object.keys(this.testData.markerPositions);
         }
 
         public getRanges(): Range[] {
@@ -2768,6 +2759,10 @@ namespace FourSlashInterface {
             return this.state.getMarkers();
         }
 
+        public markerNames(): string[] {
+            return this.state.getMarkerNames();
+        }
+
         public marker(name?: string): FourSlash.Marker {
             return this.state.getMarkerByName(name);
         }
@@ -2911,10 +2906,6 @@ namespace FourSlashInterface {
             this.state.verifyTypeDefinitionsCount(this.negative, expectedCount);
         }
 
-        public definitionLocationExists() {
-            this.state.verifyDefinitionLocationExists(this.negative);
-        }
-
         public verifyDefinitionsName(name: string, containerName: string) {
             this.state.verifyDefinitionsName(this.negative, name, containerName);
         }
@@ -2962,8 +2953,8 @@ namespace FourSlashInterface {
             this.state.verifyCurrentFileContent(text);
         }
 
-        public goToDefinitionIs(endMarker: string) {
-            this.state.verifyGoToDefinitionIs(endMarker);
+        public goToDefinitionIs(endMarkers: string | string[]) {
+            this.state.verifyGoToDefinitionIs(endMarkers);
         }
 
         public goToDefinition(...startsAndEnds: (string | string[])[]) {
